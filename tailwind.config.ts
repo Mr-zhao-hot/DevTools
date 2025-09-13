@@ -1,62 +1,51 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.ts（项目根目录必须存在该文件）
+import type { Config } from "tailwindcss";
+
+import tailwindcss_animate from 'tailwindcss-animate'
+
 export default {
-    darkMode: ["class"],
-    content: [
+  // 1. 关键：扫描所有需要解析 Tailwind 样式的文件（包括 shadcn 组件）
+  content: [
     "./index.html",
-    "./src/**/*.{vue,js,ts,jsx,tsx}",
-    // 确保 shadcn 组件能被 Tailwind 识别
-    "./src/components/ui/**/*.{vue,js,ts}"
+    "./src/**/*.{vue,js,ts,jsx,tsx}", // 扫描项目 src 下所有组件
+    "./src/components/ui/**/*.{vue,js,ts,jsx,tsx}", // 单独扫描 shadcn 组件目录（确保不遗漏）
   ],
   theme: {
-  	extend: {
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		},
-  		colors: {
-  			background: 'hsl(var(--background))',
-  			foreground: 'hsl(var(--foreground))',
-  			card: {
-  				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
-  			},
-  			popover: {
-  				DEFAULT: 'hsl(var(--popover))',
-  				foreground: 'hsl(var(--popover-foreground))'
-  			},
-  			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
-  			},
-  			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
-  			},
-  			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
-  				foreground: 'hsl(var(--muted-foreground))'
-  			},
-  			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
-  			},
-  			destructive: {
-  				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
-  			},
-  			border: 'hsl(var(--border))',
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
-  			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
-  			}
-  		}
-  	}
+    extend: {
+      // 2. 关键：映射你在 tailwind.css 中定义的 CSS 变量（否则样式无颜色/布局）
+      colors: {
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        card: "hsl(var(--card))",
+        "card-foreground": "hsl(var(--card-foreground))",
+        primary: "hsl(var(--primary))",
+        "primary-foreground": "hsl(var(--primary-foreground))",
+        secondary: "hsl(var(--secondary))",
+        "secondary-foreground": "hsl(var(--secondary-foreground))",
+        muted: "hsl(var(--muted))",
+        "muted-foreground": "hsl(var(--muted-foreground))",
+        destructive: "hsl(var(--destructive))",
+        "destructive-foreground": "hsl(var(--destructive-foreground))",
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        sidebar: {
+          background: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
+        },
+      },
+      // 3. 映射你定义的圆角变量（确保组件圆角生效）
+      borderRadius: {
+        DEFAULT: "var(--radius)",
+      },
+    },
   },
-  plugins: [require("tailwindcss-animate")]
-}
+  // 4. 关键：引入 shadcn 依赖的 Tailwind 插件（否则动画/特殊样式失效）
+  plugins: [tailwindcss_animate],
+} satisfies Config;
